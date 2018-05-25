@@ -1,20 +1,16 @@
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 
 const rule = {
   css(option) {
     return {
       test: /\.css$/,
-      use: ExtractTextPlugin.extract({
-        fallback: 'style-loader',
-        use: [
-          {
-            loader: 'css-loader',
-            options: { importLoaders: 1, url: false, ...option }
-          },
-          'postcss-loader'
-        ]
-      })
+      use: [
+        option.production ? MiniCssExtractPlugin.loader : 'style-loader',
+        'css-loader',
+        'postcss-loader'
+      ]
     }
   },
   image() {
@@ -44,13 +40,23 @@ const rule = {
 exports.rule = rule
 
 const plugins = {
-  css: path => new ExtractTextPlugin(path || 'style.css'),
+  css: option =>
+    new MiniCssExtractPlugin(
+      option || {
+        filename: 'style.css',
+        chunkFilename: '[id].[hash].css'
+      }
+    ),
   html: config =>
     new HtmlWebpackPlugin(
       config || { title: 'Project Starter for Javascript', template: 'public/index.html' }
     )
 }
 exports.plugins = plugins
+
+exports.optimization = {
+  css: option => new OptimizeCSSAssetsPlugin(option)
+}
 
 exports.entry = {
   main: ['./src/index.js', './src/style/style.css']
