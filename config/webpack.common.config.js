@@ -8,7 +8,7 @@ const rule = {
       test: /\.css$/,
       use: [
         option.production ? MiniCssExtractPlugin.loader : 'style-loader',
-        'css-loader',
+        { loader: 'css-loader', options: { minimize: option.production } },
         'postcss-loader'
       ]
     }
@@ -47,10 +47,12 @@ const plugins = {
         chunkFilename: '[id].[hash].css'
       }
     ),
-  html: config =>
-    new HtmlWebpackPlugin(
-      config || { title: 'Project Starter for Javascript', template: 'public/index.html' }
-    )
+  html: option =>
+    new HtmlWebpackPlugin({
+      title: 'Project Starter for Javascript',
+      template: 'public/index.html',
+      ...option
+    })
 }
 exports.plugins = plugins
 

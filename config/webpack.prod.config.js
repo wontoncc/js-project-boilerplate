@@ -5,6 +5,5 @@ module.exports = {
   mode: 'production',
   entry: common.entry,
   module: { rules: [common.rule.css({ production: true }), common.rule.babel()] },
-  plugins: [common.plugins.css(), common.plugins.html()],
-  optimization: { minimizer: [common.optimization.css({})] }
+  plugins: [common.plugins.css(), common.plugins.html({ minify: true })]
 }
