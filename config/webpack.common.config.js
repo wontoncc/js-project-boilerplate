@@ -21,13 +21,16 @@ const rule = {
   },
   babel() {
     return {
-      test: /\.js$/,
+      test: /\.jsx?$/,
       exclude: /node_modules/,
       use: {
         loader: 'babel-loader',
         options: {
           presets: ['@babel/preset-env'],
           plugins: [
+            // '@babel/plugin-syntax-jsx',
+            ['@babel/plugin-proposal-decorators', { legacy: true }],
+            ['@babel/plugin-proposal-class-properties', { loose: true }],
             '@babel/plugin-transform-runtime',
             '@babel/plugin-transform-async-to-generator',
             '@babel/plugin-proposal-object-rest-spread'

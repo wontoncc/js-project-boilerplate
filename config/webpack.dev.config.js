@@ -6,7 +6,7 @@ const common = require('./webpack.common.config')
 module.exports = {
   mode: 'development',
   entry: common.entry,
-  module: { rules: [common.rule.css({})] },
+  module: { rules: [common.rule.css({}), common.rule.babel()] },
   plugins: [common.plugins.html()]
 
   // serve: {
